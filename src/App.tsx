@@ -14,17 +14,14 @@ import { hasActiveSubscription } from './services/subscriptionService';
 
 function App() {
   const [activeSection, setActiveSection] = useState('home');
-  const { user, loading: authLoading } = useSupabaseAuth();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { user, loading: authLoading, signOut } = useSupabaseAuth();
   const [hasActiveSubscriptionState, setHasActiveSubscriptionState] = useState(false);
   const { isInitialized, error } = useGoogleApis();
 
   useEffect(() => {
     if (user) {
-      setIsAuthenticated(true);
       hasActiveSubscription(user.id).then(setHasActiveSubscriptionState);
     } else {
-      setIsAuthenticated(false);
       setHasActiveSubscriptionState(false);
     }
   }, [user]);
@@ -43,8 +40,8 @@ function App() {
       return <div className="flex justify-center items-center h-screen">Loading...</div>;
     }
 
-    if (authProtected.includes(activeSection) && !isAuthenticated) {
-      return <Login setActiveSection={setActiveSection} onLogin={() => setIsAuthenticated(true)} />;
+    if (authProtected.includes(activeSection) && !user) {
+      return <Login setActiveSection={setActiveSection} />;
     }
 
     if (subscriptionProtected.includes(activeSection) && !hasActiveSubscriptionState) {
@@ -69,11 +66,11 @@ function App() {
       case 'editor':
         return <CanvasEditor />;
       case 'login':
-        return <Login setActiveSection={setActiveSection} onLogin={() => setIsAuthenticated(true)} />;
+        return <Login setActiveSection={setActiveSection} />;
       case 'register':
-        return <Register setActiveSection={setActiveSection} onRegister={() => setIsAuthenticated(true)} />;
+        return <Register setActiveSection={setActiveSection} />;
       case 'profile':
-        return <Profile onLogout={() => { setIsAuthenticated(false); setActiveSection('home'); }} />;
+        return <Profile onLogout={() => { signOut(); setActiveSection('home'); }} />;
       case 'pricing':
         return (
           <Pricing
@@ -94,9 +91,9 @@ function App() {
       <Header 
         activeSection={activeSection} 
         setActiveSection={setActiveSection} 
-        isAuthenticated={isAuthenticated}
+        isAuthenticated={!!user}
         hasActiveSubscription={hasActiveSubscriptionState}
-        onLogout={() => { setIsAuthenticated(false); setActiveSection('home'); }}
+        onLogout={() => { signOut(); setActiveSection('home'); }}
       />
       <main className="pt-20">
         {!isInitialized && (

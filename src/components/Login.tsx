@@ -4,10 +4,9 @@ import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 
 interface LoginProps {
   setActiveSection: (section: string) => void;
-  onLogin: () => void; // Callback to update auth state in App
 }
 
-const Login: React.FC<LoginProps> = ({ setActiveSection, onLogin }) => {
+const Login: React.FC<LoginProps> = ({ setActiveSection }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -23,7 +22,6 @@ const Login: React.FC<LoginProps> = ({ setActiveSection, onLogin }) => {
     if (error) {
       setError(error.message);
     } else {
-      onLogin();
       setActiveSection('profile');
     }
   };

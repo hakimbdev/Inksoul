@@ -4,10 +4,9 @@ import { useSupabaseAuth } from '../hooks/useSupabaseAuth';
 
 interface RegisterProps {
   setActiveSection: (section: string) => void;
-  onRegister: () => void;
 }
 
-const Register: React.FC<RegisterProps> = ({ setActiveSection, onRegister }) => {
+const Register: React.FC<RegisterProps> = ({ setActiveSection }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -29,7 +28,6 @@ const Register: React.FC<RegisterProps> = ({ setActiveSection, onRegister }) => 
     if (error) {
       setError(error.message);
     } else {
-      onRegister();
       setActiveSection('profile');
     }
   };

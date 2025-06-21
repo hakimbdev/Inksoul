@@ -1,24 +1,11 @@
 import React from 'react';
 import { Sparkles, Paintbrush, Eye, Download } from 'lucide-react';
-import { useSupabaseAuth } from './hooks/useSupabaseAuth';
-import { hasActiveSubscription } from './services/subscriptionService';
 
 interface HeroSectionProps {
   setActiveSection: (section: string) => void;
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({ setActiveSection }) => {
-  const { user } = useSupabaseAuth();
-  const [hasSubscription, setHasSubscription] = React.useState(false);
-
-  React.useEffect(() => {
-    if (user) {
-      hasActiveSubscription(user.id).then(setHasSubscription);
-    } else {
-      setHasSubscription(false);
-    }
-  }, [user]);
-
   const features = [
     {
       icon: Paintbrush,
