@@ -26,11 +26,12 @@ const Pricing: React.FC<PricingProps> = ({ user, onPaymentSuccess }) => {
       price: '₦1,000',
       amount: 100000, // in kobo
       features: [
-        'Up to 15 generations/month',
+        'Up to 15 generations/2 days',
         'No watermark',
         'Standard export',
       ],
-      buttonText: 'Choose Basic',
+      buttonText: 'Choose Basic (2 days)',
+      duration: '2 days',
     },
     {
       name: 'Pro (Monthly)',
