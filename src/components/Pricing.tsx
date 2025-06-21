@@ -10,27 +10,53 @@ interface PricingProps {
 const Pricing: React.FC<PricingProps> = ({ user, onPaymentSuccess }) => {
   const plans = [
     {
-      name: 'Weekly',
-      price: 'N25,000',
-      amount: 2500000, // in kobo
-      features: ['Full access to all features', 'Create unlimited artworks', 'Standard support'],
-      buttonText: 'Choose Weekly',
+      name: 'Free',
+      price: '₦0',
+      amount: 0,
+      features: [
+        'Limited generations',
+        'Watermark (Brand: InkSoul)',
+        'Basic export',
+      ],
+      buttonText: 'Start Free',
+      isFree: true,
     },
     {
-      name: 'Monthly',
-      price: 'N55,000',
-      amount: 5500000, // in kobo
-      features: ['Full access to all features', 'Create unlimited artworks', 'Priority support'],
-      buttonText: 'Choose Monthly',
+      name: 'Basic',
+      price: '₦1,000',
+      amount: 100000, // in kobo
+      features: [
+        'Up to 15 generations/month',
+        'No watermark',
+        'Standard export',
+      ],
+      buttonText: 'Choose Basic',
+    },
+    {
+      name: 'Pro (Monthly)',
+      price: '₦5,000',
+      amount: 500000, // in kobo
+      features: [
+        'Unlimited generations',
+        'No watermark',
+        'High-res export',
+        'Mural creator tools',
+      ],
+      buttonText: 'Choose Pro (Monthly)',
       popular: true,
     },
     {
-      name: 'Annual',
-      price: 'N620,000',
-      amount: 62000000, // in kobo
-      originalPrice: 'N660,000',
-      features: ['Full access to all features', 'Create unlimited artworks', 'Dedicated support', 'Early access to new features'],
-      buttonText: 'Choose Annual',
+      name: 'Pro (Annual)',
+      price: '₦60,000',
+      amount: 6000000, // in kobo
+      features: [
+        'Unlimited generations',
+        'No watermark',
+        'High-res export',
+        'Mural creator tools',
+      ],
+      buttonText: 'Choose Pro (Annual)',
+      originalPrice: '₦60,000',
     },
   ];
 
@@ -46,7 +72,7 @@ const Pricing: React.FC<PricingProps> = ({ user, onPaymentSuccess }) => {
           </p>
         </div>
 
-        <div className="mt-10 grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {plans.map((plan) => (
             <div
               key={plan.name}
@@ -63,7 +89,6 @@ const Pricing: React.FC<PricingProps> = ({ user, onPaymentSuccess }) => {
                   <p className="text-gray-500 line-through">{plan.originalPrice}</p>
                 )}
                 <p className="mt-4 text-4xl font-extrabold text-gray-900">{plan.price}</p>
-                <p className="mt-4 text-gray-600">per {plan.name.toLowerCase().slice(0, -2)}</p>
                 <ul className="mt-6 space-y-4">
                   {plan.features.map((feature, index) => (
                     <li key={index} className="flex items-center">
@@ -74,13 +99,22 @@ const Pricing: React.FC<PricingProps> = ({ user, onPaymentSuccess }) => {
                 </ul>
               </div>
               <div className="mt-8">
-                <PaystackButton
-                  plan={{ name: plan.name, amount: plan.amount }}
-                  user={user}
-                  buttonText={plan.buttonText}
-                  className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
-                  onSuccess={onPaymentSuccess}
-                />
+                {plan.isFree ? (
+                  <button
+                    className="w-full bg-gray-300 text-gray-700 py-3 px-6 rounded-lg font-semibold cursor-default"
+                    disabled
+                  >
+                    {plan.buttonText}
+                  </button>
+                ) : (
+                  <PaystackButton
+                    plan={{ name: plan.name, amount: plan.amount }}
+                    user={user}
+                    buttonText={plan.buttonText}
+                    className="w-full bg-primary-600 text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-700 transition-colors"
+                    onSuccess={onPaymentSuccess}
+                  />
+                )}
               </div>
             </div>
           ))}
